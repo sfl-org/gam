@@ -1,0 +1,848 @@
+@prefix : <http://www.isfla.org/gam-core#> .
+@prefix sw: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix gam: <http://www.isfla.org/gam-core#> .
+@prefix olo: <http://purl.org/ontology/olo/core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.isfla.org/gam-core> .
+
+<http://www.isfla.org/gam-core> rdf:type owl:Ontology ;
+                                
+                                rdfs:label "Generalised Annotation Model"^^rdfs:Literal ;
+                                
+                                owl:versionInfo "1.0"^^rdfs:Literal ;
+                                
+                                rdfs:comment "GAM stands for Generalised Annotation Model. At the first moment, this model of annotation is conceived of as a medium for exchanging annotations among different software applications developed by different research teams in Systemic Functional Linguistics."^^rdfs:Literal ;
+                                
+                                owl:imports olo: ;
+                                
+                                owl:versionIRI <http://www.isfla.org/gam-core/1.0> .
+
+
+#################################################################
+#
+#    Object Properties
+#
+#################################################################
+
+
+###  http://purl.org/ontology/olo/core#next
+
+olo:next rdfs:subPropertyOf :collectionRelation .
+
+
+
+###  http://purl.org/ontology/olo/core#ordered_list
+
+olo:ordered_list rdfs:subPropertyOf :collectionRelation .
+
+
+
+###  http://purl.org/ontology/olo/core#previous
+
+olo:previous rdfs:subPropertyOf :collectionRelation .
+
+
+
+###  http://purl.org/ontology/olo/core#slot
+
+olo:slot rdfs:subPropertyOf :collectionRelation .
+
+
+
+###  http://www.isfla.org/gam-core#ancestor
+
+:ancestor rdf:type owl:ObjectProperty ;
+          
+          owl:inverseOf :descendant ;
+          
+          rdfs:subPropertyOf :hierarchycalOrderRelation .
+
+
+
+###  http://www.isfla.org/gam-core#collectionRelation
+
+:collectionRelation rdf:type owl:ObjectProperty ;
+                    
+                    rdfs:comment "relations for Ordered List and Slot classes used to model a ordered list"^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#composes
+
+:composes rdf:type owl:ObjectProperty ;
+          
+          rdfs:subPropertyOf :ancestor ;
+          
+          owl:inverseOf :isComposedOf .
+
+
+
+###  http://www.isfla.org/gam-core#consistsOf
+
+:consistsOf rdf:type owl:ObjectProperty ;
+            
+            rdfs:comment "this relationship signifies the link between a feature structure and the set of Attributes it consists of"^^rdfs:Literal ;
+            
+            rdfs:range :Attribute ;
+            
+            rdfs:domain :FeatureStructure ;
+            
+            rdfs:subPropertyOf :featureStructureRelation .
+
+
+
+###  http://www.isfla.org/gam-core#constituencyRelation
+
+:constituencyRelation rdf:type owl:ObjectProperty ;
+                      
+                      rdfs:comment "relations used for creating constituency structure"^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#constitutes
+
+:constitutes rdf:type owl:ObjectProperty ;
+             
+             rdfs:subPropertyOf :ancestor ,
+                                :constituencyRelation ;
+             
+             owl:inverseOf :hasConstituent .
+
+
+
+###  http://www.isfla.org/gam-core#corpusRelation
+
+:corpusRelation rdf:type owl:ObjectProperty .
+
+
+
+###  http://www.isfla.org/gam-core#corresponds
+
+:corresponds rdf:type owl:IrreflexiveProperty ,
+                      owl:ObjectProperty ,
+                      owl:SymmetricProperty ;
+             
+             rdfs:comment """this relation relates units that complement each in a multifaceted description/analisys. In case a unit in one metafunction has the same underlying realization in another metafunction then they correspond to each other.
+
+Not to be confudes with conflatiopn of functions (of different dimensions). For example the same syntactic unit can be a Subject and a Agent, then we say that the functions are conflated on the same unit. But a nominal group and an entity of type human correspond to each other but they are not the same unit because nominal group is of syntactic nature whereas human entity is from semantic realm."""^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#dependecyRelation
+
+:dependecyRelation rdf:type owl:ObjectProperty ;
+                   
+                   rdfs:comment "relations used for creating dependency structure"^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#descendant
+
+:descendant rdf:type owl:ObjectProperty ;
+            
+            rdfs:subPropertyOf :hierarchycalOrderRelation .
+
+
+
+###  http://www.isfla.org/gam-core#expounds
+
+:expounds rdf:type owl:ObjectProperty ;
+          
+          rdfs:subPropertyOf :ancestor ;
+          
+          owl:inverseOf :isExpoundedBy .
+
+
+
+###  http://www.isfla.org/gam-core#extends
+
+:extends rdf:type owl:ObjectProperty ;
+         
+         rdfs:comment "this relation holds between Functional Elements and is demanded so far by the Sydney Grammar where an element is decomposed into sub elements (such as in the case of a predicate, main verb and verbal particle)."^^rdfs:Literal ;
+         
+         rdfs:subPropertyOf :ancestor ;
+         
+         owl:inverseOf :isExtendedBy .
+
+
+
+###  http://www.isfla.org/gam-core#featureStructureRelation
+
+:featureStructureRelation rdf:type owl:ObjectProperty ;
+                          
+                          rdfs:comment "relation used for binding elements of the Feature Structures"^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#fills
+
+:fills rdf:type owl:ObjectProperty ;
+       
+       rdfs:subPropertyOf :ancestor ;
+       
+       owl:inverseOf :isFilledBy .
+
+
+
+###  http://www.isfla.org/gam-core#hasAssigned
+
+:hasAssigned rdf:type owl:AsymmetricProperty ,
+                      owl:IrreflexiveProperty ,
+                      owl:ObjectProperty ;
+             
+             rdfs:comment "binds the FeatureStructure Slot to its Value"^^rdfs:Literal ;
+             
+             rdfs:domain :Attribute ;
+             
+             rdfs:range :Value ;
+             
+             rdfs:subPropertyOf :featureStructureRelation .
+
+
+
+###  http://www.isfla.org/gam-core#hasAssociated
+
+:hasAssociated rdf:type owl:ObjectProperty ;
+               
+               rdfs:comment "relation used for associating a feature structure to any other class (parse tree nodes, files, corpuses, etc. anything that may benefit from description via Attribute-Value Matrix)"^^rdfs:Literal ;
+               
+               rdfs:range :FeatureStructure .
+
+
+
+###  http://www.isfla.org/gam-core#hasChoice
+
+:hasChoice rdf:type owl:ObjectProperty ;
+           
+           rdfs:subPropertyOf :paradigmaticOrderRelation .
+
+
+
+###  http://www.isfla.org/gam-core#hasConstituent
+
+:hasConstituent rdf:type owl:ObjectProperty ;
+                
+                rdfs:subPropertyOf :constituencyRelation ,
+                                   :descendant .
+
+
+
+###  http://www.isfla.org/gam-core#hierarchycalOrderRelation
+
+:hierarchycalOrderRelation rdf:type owl:ObjectProperty ;
+                           
+                           rdfs:comment "relations (independent of paradigm) signifying some sort of hierarchy"^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#isActivatedBy
+
+:isActivatedBy rdf:type owl:ObjectProperty ;
+               
+               rdfs:subPropertyOf :paradigmaticOrderRelation .
+
+
+
+###  http://www.isfla.org/gam-core#isComposedOf
+
+:isComposedOf rdf:type owl:ObjectProperty ;
+              
+              rdfs:subPropertyOf :descendant .
+
+
+
+###  http://www.isfla.org/gam-core#isExpoundedBy
+
+:isExpoundedBy rdf:type owl:ObjectProperty ;
+               
+               rdfs:subPropertyOf :descendant .
+
+
+
+###  http://www.isfla.org/gam-core#isExtendedBy
+
+:isExtendedBy rdf:type owl:ObjectProperty ;
+              
+              rdfs:subPropertyOf :descendant .
+
+
+
+###  http://www.isfla.org/gam-core#isFilledBy
+
+:isFilledBy rdf:type owl:ObjectProperty ;
+            
+            rdfs:subPropertyOf :descendant .
+
+
+
+###  http://www.isfla.org/gam-core#linearOrderRelation
+
+:linearOrderRelation rdf:type owl:ObjectProperty ,
+                              owl:TransitiveProperty ;
+                     
+                     rdfs:comment """Relations stating order relations between various elemnts of a parse structure.
+This relations are Transitive, Irreflexive and Asymetric"""^^rdfs:Literal ;
+                     
+                     rdfs:subPropertyOf owl:topObjectProperty .
+
+
+
+###  http://www.isfla.org/gam-core#logicallyRelatingBy
+
+:logicallyRelatingBy rdf:type owl:ObjectProperty ;
+                     
+                     rdfs:comment "a logical operator holding between members of a collection"^^rdfs:Literal ;
+                     
+                     rdfs:domain olo:OrderedList ;
+                     
+                     rdfs:range :LogicalConnective ;
+                     
+                     rdfs:subPropertyOf :collectionRelation .
+
+
+
+###  http://www.isfla.org/gam-core#paradigmaticOrderRelation
+
+:paradigmaticOrderRelation rdf:type owl:ObjectProperty ;
+                           
+                           rdfs:comment "relations (independent of paradigm) signifying some sort of choice"^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#parentDependent
+
+:parentDependent rdf:type owl:ObjectProperty ;
+                 
+                 rdfs:comment "parentDependecy is the most used type of dependecy relation occuring in most Dependecy Gammars."^^rdfs:Literal ;
+                 
+                 rdfs:subPropertyOf :dependecyRelation .
+
+
+
+###  http://www.isfla.org/gam-core#pointsTo
+
+:pointsTo rdf:type owl:AsymmetricProperty ,
+                   owl:IrreflexiveProperty ,
+                   owl:ObjectProperty ;
+          
+          rdfs:comment "the link between a value and the FeatureStructure it is assigned"^^rdfs:Literal ;
+          
+          rdfs:range :FeatureStructure ;
+          
+          rdfs:domain :NonPrimitiveValue ;
+          
+          rdfs:subPropertyOf :featureStructureRelation .
+
+
+
+###  http://www.isfla.org/gam-core#precede
+
+:precede rdf:type owl:ObjectProperty ;
+         
+         rdfs:comment "this relation expresess that an element is BEFORE another element of the same type" ;
+         
+         rdfs:subPropertyOf :linearOrderRelation ;
+         
+         owl:inverseOf :succede .
+
+
+
+###  http://www.isfla.org/gam-core#realise
+
+:realise rdf:type owl:ObjectProperty ;
+         
+         rdfs:comment "this relation signifies the connection between a segment in a file and the parse structure unit corresponding to the span defined by segment"^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#realisedAccordingTo
+
+:realisedAccordingTo rdf:type owl:ObjectProperty ;
+                     
+                     rdfs:subPropertyOf :paradigmaticOrderRelation .
+
+
+
+###  http://www.isfla.org/gam-core#siblingDependent
+
+:siblingDependent rdf:type owl:ObjectProperty ;
+                  
+                  rdfs:comment "SFG is the only grammar to my knowledge where the concept sibling dependecy becomes salient and significantly distinguished from the parentDependecy relations used in most Dependecy Grammars"^^rdfs:Literal ;
+                  
+                  rdfs:subPropertyOf :dependecyRelation .
+
+
+
+###  http://www.isfla.org/gam-core#succede
+
+:succede rdf:type owl:ObjectProperty ;
+         
+         rdfs:comment "this relation expresess that an element is AFTER another element of the same type" ;
+         
+         rdfs:subPropertyOf :linearOrderRelation .
+
+
+
+
+
+#################################################################
+#
+#    Data properties
+#
+#################################################################
+
+
+###  http://www.isfla.org/gam-core#encoding
+
+:encoding rdf:type owl:DatatypeProperty .
+
+
+
+###  http://www.isfla.org/gam-core#endOffset
+
+:endOffset rdf:type owl:DatatypeProperty ;
+           
+           rdfs:subPropertyOf owl:topDataProperty .
+
+
+
+###  http://www.isfla.org/gam-core#literalValue
+
+:literalValue rdf:type owl:DatatypeProperty ;
+              
+              rdfs:range rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#probability
+
+:probability rdf:type owl:DatatypeProperty ;
+             
+             rdfs:range xsd:double .
+
+
+
+###  http://www.isfla.org/gam-core#realizationRule
+
+:realizationRule rdf:type owl:DatatypeProperty ;
+                 
+                 rdfs:comment "each systemic feature needs to express how it is being realized"^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#startOffset
+
+:startOffset rdf:type owl:DatatypeProperty .
+
+
+
+
+
+#################################################################
+#
+#    Classes
+#
+#################################################################
+
+
+###  http://purl.org/ontology/olo/core#OrderedList
+
+olo:OrderedList rdfs:subClassOf :CollectionElement .
+
+
+
+###  http://purl.org/ontology/olo/core#Slot
+
+olo:Slot rdfs:subClassOf :CollectionElement .
+
+
+
+###  http://www.isfla.org/gam-core#Attribute
+
+:Attribute rdf:type owl:Class ;
+           
+           rdfs:subClassOf :FeatureStructureElement ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty :hasAssigned ;
+                             owl:onClass :Value ;
+                             owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                           ] ;
+           
+           rdfs:comment "the slot of a feature structure"^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#ChoiceSet
+
+:ChoiceSet rdf:type owl:Class ;
+           
+           rdfs:subClassOf olo:OrderedList ,
+                           :SystemicNetworkElement ;
+           
+           rdfs:comment "a set of systemic features representing choices in one or more systems. The elements in this set are conjuncted, meaning that all of them have been selected"^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#CollectionElement
+
+:CollectionElement rdf:type owl:Class ;
+                   
+                   rdfs:comment "the general class for modelling an ordered collection"^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#Composite
+
+:Composite rdf:type owl:Class ;
+           
+           rdfs:subClassOf :Unit .
+
+
+
+###  http://www.isfla.org/gam-core#Constituent
+
+:Constituent rdf:type owl:Class ;
+             
+             rdfs:subClassOf :Node ;
+             
+             rdfs:comment "Phrase Structure Grammar consider phrase structure grammars made of \"constituents\""^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#Corpus
+
+:Corpus rdf:type owl:Class ;
+        
+        rdfs:subClassOf olo:OrderedList ,
+                        :CorpusElement .
+
+
+
+###  http://www.isfla.org/gam-core#CorpusElement
+
+:CorpusElement rdf:type owl:Class .
+
+
+
+###  http://www.isfla.org/gam-core#Dependent
+
+:Dependent rdf:type owl:Class ;
+           
+           rdfs:subClassOf :Node ;
+           
+           rdfs:comment "Dependecy Grammars use \"words\" (traditional grammar meaning of term) as the structural elements. This roughly corresponds to the Lexical Items in SFL"^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#EntryCondition
+
+:EntryCondition rdf:type owl:Class ;
+                
+                rdfs:subClassOf olo:OrderedList ,
+                                :SystemicNetworkElement ,
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty :logicallyRelatingBy ;
+                                  owl:onClass :LogicalConnective ;
+                                  owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                ] ;
+                
+                rdfs:comment """contains the condition that needs to be satisfied in order to activate/enter choice making of a given system. 
+The entry condition is stated by a set of feature preselections. 
+Feature preselections can be either a conjunctive or disjunctive set or both equivalent to a predicate logic formula with conjunction and disjunction operators (no bracketing)."""^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#Feature
+
+:Feature rdf:type owl:Class ;
+         
+         rdfs:subClassOf olo:Slot ,
+                         :SystemicNetworkElement ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :realizationRule ;
+                           owl:minCardinality "1"^^xsd:nonNegativeInteger
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :probability ;
+                           owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                           owl:onDataRange xsd:anyURI
+                         ] ;
+         
+         rdfs:comment "the systemic feature represents one of the choices the system has to offer"^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#FeatureStructure
+
+:FeatureStructure rdf:type owl:Class ;
+                  
+                  rdfs:subClassOf :FeatureStructureElement ,
+                                  [ rdf:type owl:Restriction ;
+                                    owl:onProperty :consistsOf ;
+                                    owl:onClass :Attribute ;
+                                    owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                  ] ;
+                  
+                  rdfs:comment "the generic (untyped) feature structure, or Attribute-Value Matrix"^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#FeatureStructureElement
+
+:FeatureStructureElement rdf:type owl:Class ;
+                         
+                         owl:disjointWith :Node ;
+                         
+                         rdfs:comment "the general class for modelling feature structures. Typed Feature Structures can be realised by sub-classifying FeatureStructure class."^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#File
+
+:File rdf:type owl:Class ;
+      
+      rdfs:subClassOf olo:OrderedList ,
+                      olo:Slot ,
+                      :CorpusElement ,
+                      [ rdf:type owl:Restriction ;
+                        owl:onProperty :encoding ;
+                        owl:cardinality "1"^^xsd:nonNegativeInteger
+                      ] .
+
+
+
+###  http://www.isfla.org/gam-core#FunctionalElement
+
+:FunctionalElement rdf:type owl:Class ;
+                   
+                   rdfs:subClassOf :Node ;
+                   
+                   rdfs:comment "This is class constitutes a reification of functions (i.e. the non-structural grammatical constructions)"^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#LexicalItem
+
+:LexicalItem rdf:type owl:Class ;
+             
+             rdfs:subClassOf :Unit .
+
+
+
+###  http://www.isfla.org/gam-core#LinguisticMetafunction
+
+:LinguisticMetafunction rdf:type owl:Class ;
+                        
+                        rdfs:comment "a generic class groupping the units and functions according to a particular level of linguistic analisys."^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#LogicalConnective
+
+:LogicalConnective rdf:type owl:Class ;
+                   
+                   rdfs:subClassOf :SystemicNetworkElement ;
+                   
+                   rdfs:comment "a fixed set of logical connective. It can be either OR, AND, XNOR, or NOT"^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#Node
+
+:Node rdf:type owl:Class ;
+      
+      rdfs:comment "a generic node class for all parse trees/graphs, regardless of the gramatical theory"^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#NonPrimitiveValue
+
+:NonPrimitiveValue rdf:type owl:Class ;
+                   
+                   rdfs:subClassOf :Value ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty :pointsTo ;
+                                     owl:onClass :FeatureStructure ;
+                                     owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                   ] ;
+                   
+                   owl:disjointWith :PrimitiveValue ;
+                   
+                   rdfs:comment "when the value of a slot/attribute is another feature structure"^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#PrimitiveValue
+
+:PrimitiveValue rdf:type owl:Class ;
+                
+                rdfs:subClassOf :Value ,
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty :literalValue ;
+                                  owl:cardinality "1"^^xsd:nonNegativeInteger
+                                ] ;
+                
+                rdfs:comment "when the value of an attribute is of primitive type (string, number, bool, etc.)"^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#Segment
+
+:Segment rdf:type owl:Class ;
+         
+         rdfs:subClassOf olo:Slot ,
+                         :CorpusElement ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :hasAssociated ;
+                           owl:onClass :FeatureStructure ;
+                           owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :startOffset ;
+                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                           owl:onDataRange xsd:long
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :endOffset ;
+                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                           owl:onDataRange xsd:long
+                         ] .
+
+
+
+###  http://www.isfla.org/gam-core#System
+
+:System rdf:type owl:Class ;
+        
+        rdfs:subClassOf :SystemicNetworkElement ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty :literalValue ;
+                          owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                        ] ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty :hasChoice ;
+                          owl:onClass :Feature ;
+                          owl:minQualifiedCardinality "2"^^xsd:nonNegativeInteger
+                        ] ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty :isActivatedBy ;
+                          owl:onClass :EntryCondition ;
+                          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                        ] ;
+        
+        rdfs:comment "System is the base class for creating a paradigmatic perspective on language composed into a (Systemic) Network of Systems."^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#SystemicNetworkElement
+
+:SystemicNetworkElement rdf:type owl:Class ;
+                        
+                        rdfs:comment "the general glass for modelling systemic networks"^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#Unit
+
+:Unit rdf:type owl:Class ;
+      
+      rdfs:subClassOf :Node .
+
+
+
+###  http://www.isfla.org/gam-core#Value
+
+:Value rdf:type owl:Class ;
+       
+       rdfs:subClassOf :FeatureStructureElement ;
+       
+       rdfs:comment "the value corresponding to a slot in a feature structure"^^rdfs:Literal .
+
+
+
+
+
+#################################################################
+#
+#    Individuals
+#
+#################################################################
+
+
+###  http://www.isfla.org/gam-core#And
+
+:And rdf:type :LogicalConnective ,
+              owl:NamedIndividual .
+
+
+
+###  http://www.isfla.org/gam-core#Not
+
+:Not rdf:type :LogicalConnective ,
+              owl:NamedIndividual .
+
+
+
+###  http://www.isfla.org/gam-core#Or
+
+:Or rdf:type :LogicalConnective ,
+             owl:NamedIndividual .
+
+
+
+###  http://www.isfla.org/gam-core#Xor
+
+:Xor rdf:type :LogicalConnective ,
+              owl:NamedIndividual .
+
+
+
+
+
+#################################################################
+#
+#    General axioms
+#
+#################################################################
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( :Not
+                        :Xor
+                      )
+] .
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( :Not
+                        :Or
+                      )
+] .
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( :Or
+                        :Xor
+                      )
+] .
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( :And
+                        :Or
+                      )
+] .
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( :And
+                        :Xor
+                      )
+] .
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( :And
+                        :Not
+                      )
+] .
+
+
+
+
+###  Generated by the OWL API (version 3.5.1) http://owlapi.sourceforge.net
+

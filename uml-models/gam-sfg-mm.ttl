@@ -1,0 +1,243 @@
+@prefix : <http://www.isfla.org/gam-sfg-mm#> .
+@prefix gam: <http://www.isfla.org/gam-core#> .
+@prefix olo: <http://purl.org/ontology/olo/core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.isfla.org/gam-sfg-mm> .
+
+<http://www.isfla.org/gam-sfg-mm> rdf:type owl:Ontology ;
+                                  
+                                  rdfs:label "Generalised Annotation Model: Systemic Functional Grammar"^^rdfs:Literal ;
+                                  
+                                  owl:versionInfo "1.0"^^rdfs:Literal ;
+                                  
+                                  rdfs:comment "Contains Integrity Constratints corresponding to the SFG meta model (the model of theory of grammar)"^^rdfs:Literal ;
+                                  
+                                  owl:imports <http://www.isfla.org/gam-core/1.0> ;
+                                  
+                                  owl:versionIRI <http://www.isfla.org/gam-sfg-mm/1.0> .
+
+
+#################################################################
+#
+#    Object Properties
+#
+#################################################################
+
+
+###  http://www.isfla.org/gam-core#composes
+
+gam:composes rdfs:range gam:Composite ;
+             
+             rdfs:domain gam:FunctionalElement .
+
+
+
+###  http://www.isfla.org/gam-core#constituencyRelation
+
+gam:constituencyRelation rdf:type owl:TransitiveProperty .
+
+
+
+###  http://www.isfla.org/gam-core#constitutes
+
+gam:constitutes rdf:type owl:TransitiveProperty ;
+                
+                rdfs:comment """relationship between lower constituent to a parent constituent.
+in SFG this is an indirect relationship going through a FunctionalElement by a chain of two other relations fills + composes || expounds + composes"""^^rdfs:Literal ;
+                
+                rdfs:range gam:Composite ;
+                
+                rdfs:domain gam:Unit ;
+                
+                owl:propertyChainAxiom ( gam:fills
+                                         gam:composes
+                                       ) ,
+                                       ( gam:expounds
+                                         gam:composes
+                                       ) .
+
+
+
+###  http://www.isfla.org/gam-core#expounds
+
+gam:expounds rdfs:range gam:FunctionalElement ;
+             
+             rdfs:domain gam:LexicalItem .
+
+
+
+###  http://www.isfla.org/gam-core#extends
+
+gam:extends rdfs:domain gam:FunctionalElement ;
+            
+            rdfs:range gam:FunctionalElement .
+
+
+
+###  http://www.isfla.org/gam-core#fills
+
+gam:fills rdfs:domain gam:Composite ;
+          
+          rdfs:range gam:FunctionalElement .
+
+
+
+###  http://www.isfla.org/gam-core#hasConstituent
+
+gam:hasConstituent rdf:type owl:TransitiveProperty ;
+                   
+                   rdfs:comment """constituency relation links two units together as a chain of two properties leading via a functional element. 
+constituency relation can be acheived either through isComposedOf + isExpoubndedBy sequence of relations OR by isComposedOf + isFilledBy sequence of relations"""^^rdfs:Literal ;
+                   
+                   rdfs:domain gam:Composite ;
+                   
+                   rdfs:range gam:Unit ;
+                   
+                   owl:propertyChainAxiom ( gam:isComposedOf
+                                            gam:isFilledBy
+                                          ) ,
+                                          ( gam:isComposedOf
+                                            gam:isExpoundedBy
+                                          ) .
+
+
+
+###  http://www.isfla.org/gam-core#isComposedOf
+
+gam:isComposedOf rdfs:domain gam:Composite ;
+                 
+                 rdfs:range gam:FunctionalElement .
+
+
+
+###  http://www.isfla.org/gam-core#isExpoundedBy
+
+gam:isExpoundedBy rdfs:domain gam:FunctionalElement ;
+                  
+                  rdfs:range gam:LexicalItem .
+
+
+
+###  http://www.isfla.org/gam-core#isFilledBy
+
+gam:isFilledBy rdfs:range gam:Composite ;
+               
+               rdfs:domain gam:FunctionalElement .
+
+
+
+
+
+#################################################################
+#
+#    Classes
+#
+#################################################################
+
+
+###  http://www.isfla.org/gam-core#Composite
+
+gam:Composite rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                owl:onProperty gam:isComposedOf ;
+                                owl:onClass gam:FunctionalElement ;
+                                owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty gam:hasConstituent ;
+                                owl:onClass gam:Unit ;
+                                owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger
+                              ] .
+
+
+
+###  http://www.isfla.org/gam-core#FunctionalElement
+
+gam:FunctionalElement rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                        owl:onProperty gam:composes ;
+                                        owl:onClass gam:Composite ;
+                                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                      ] ,
+                                      [ rdf:type owl:Class ;
+                                        owl:unionOf ( [ rdf:type owl:Restriction ;
+                                                        owl:onProperty gam:isExpoundedBy ;
+                                                        owl:onClass gam:LexicalItem ;
+                                                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                                      ]
+                                                      [ rdf:type owl:Restriction ;
+                                                        owl:onProperty gam:isFilledBy ;
+                                                        owl:onClass gam:Composite ;
+                                                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                                      ]
+                                                    )
+                                      ] ;
+                      
+                      rdfs:comment """in SFL model FunctionalElement is 
+* an instance of Functional element defines the structure of exactly one unit. In other words the same element instance cannot define the functional structure  of multiple units
+* filled by exactly one Unit or expounded by exactly one Lexical Item (this constraint does not exist in official Cardiff Grammar where conjuncted units fill the same functional element)"""^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#LinguisticMetafunction
+
+gam:LinguisticMetafunction owl:disjointUnionOf ( :Experiential
+                                                 :Interpersonal
+                                                 :Logical
+                                                 :Textual
+                                               ) .
+
+
+
+###  http://www.isfla.org/gam-sfg-mm#Experiential
+
+:Experiential rdf:type owl:Class ;
+              
+              rdfs:subClassOf gam:LinguisticMetafunction .
+
+
+
+###  http://www.isfla.org/gam-sfg-mm#Interpersonal
+
+:Interpersonal rdf:type owl:Class ;
+               
+               rdfs:subClassOf gam:LinguisticMetafunction .
+
+
+
+###  http://www.isfla.org/gam-sfg-mm#Logical
+
+:Logical rdf:type owl:Class ;
+         
+         rdfs:subClassOf gam:LinguisticMetafunction .
+
+
+
+###  http://www.isfla.org/gam-sfg-mm#Textual
+
+:Textual rdf:type owl:Class ;
+         
+         rdfs:subClassOf gam:LinguisticMetafunction .
+
+
+
+
+
+#################################################################
+#
+#    Annotations
+#
+#################################################################
+
+
+gam:linearOrderRelation rdfs:comment """in SFG to be used 
+* eventually for defining the relative order of functional elements within a grammatical unit structures.
+* always for instances of lexical items"""^^rdfs:Literal .
+
+
+
+
+###  Generated by the OWL API (version 3.5.1) http://owlapi.sourceforge.net
+
