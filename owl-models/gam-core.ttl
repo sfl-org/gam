@@ -15,7 +15,7 @@
                                 
                                 owl:versionInfo "1.0"^^rdfs:Literal ;
                                 
-                                rdfs:comment "GAM stands for Generalised Annotation Model. At the first moment, this model of annotation is conceived of as a medium for exchanging annotations among different software applications developed by different research teams in Systemic Functional Linguistics."^^rdfs:Literal ;
+                                rdfs:comment "GAM stands for Generalised Annotation Model. At The moment, This model of annotation is conceived as a medium for exchanging annotations among different software applications developed by different research teams in Systemic Functional Linguistics BUT."^^rdfs:Literal ;
                                 
                                 owl:imports olo: ;
                                 
@@ -461,6 +461,14 @@ olo:Slot rdfs:subClassOf :CollectionElement .
 
 
 
+###  http://www.isfla.org/gam-core#Atom
+
+:Atom rdf:type owl:Class ;
+      
+      rdfs:subClassOf :SFL-Unit .
+
+
+
 ###  http://www.isfla.org/gam-core#Attribute
 
 :Attribute rdf:type owl:Class ;
@@ -499,17 +507,7 @@ olo:Slot rdfs:subClassOf :CollectionElement .
 
 :Composite rdf:type owl:Class ;
            
-           rdfs:subClassOf :Unit .
-
-
-
-###  http://www.isfla.org/gam-core#Constituent
-
-:Constituent rdf:type owl:Class ;
-             
-             rdfs:subClassOf :Node ;
-             
-             rdfs:comment "Phrase Structure Grammar consider phrase structure grammars made of \"constituents\""^^rdfs:Literal .
+           rdfs:subClassOf :SFL-Unit .
 
 
 
@@ -528,13 +526,13 @@ olo:Slot rdfs:subClassOf :CollectionElement .
 
 
 
-###  http://www.isfla.org/gam-core#Dependent
+###  http://www.isfla.org/gam-core#Dep-Unit
 
-:Dependent rdf:type owl:Class ;
-           
-           rdfs:subClassOf :Node ;
-           
-           rdfs:comment "Dependecy Grammars use \"words\" (traditional grammar meaning of term) as the structural elements. This roughly corresponds to the Lexical Items in SFL"^^rdfs:Literal .
+:Dep-Unit rdf:type owl:Class ;
+          
+          rdfs:subClassOf :Unit ;
+          
+          rdfs:comment "Dependecy Grammars use \"words\" (traditional grammar meaning of term) as the structural elements. This roughly corresponds to the Lexical Items in SFL"^^rdfs:Literal .
 
 
 
@@ -553,26 +551,6 @@ olo:Slot rdfs:subClassOf :CollectionElement .
                 rdfs:comment """contains the condition that needs to be satisfied in order to activate/enter choice making of a given system. 
 The entry condition is stated by a set of feature preselections. 
 Feature preselections can be either a conjunctive or disjunctive set or both equivalent to a predicate logic formula with conjunction and disjunction operators (no bracketing)."""^^rdfs:Literal .
-
-
-
-###  http://www.isfla.org/gam-core#Feature
-
-:Feature rdf:type owl:Class ;
-         
-         rdfs:subClassOf olo:Slot ,
-                         :SystemicNetworkElement ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :realizationRule ;
-                           owl:minCardinality "1"^^xsd:nonNegativeInteger
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :probability ;
-                           owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                           owl:onDataRange xsd:anyURI
-                         ] ;
-         
-         rdfs:comment "the systemic feature represents one of the choices the system has to offer"^^rdfs:Literal .
 
 
 
@@ -595,41 +573,30 @@ Feature preselections can be either a conjunctive or disjunctive set or both equ
 
 :FeatureStructureElement rdf:type owl:Class ;
                          
-                         owl:disjointWith :Node ;
+                         owl:disjointWith :Unit ;
                          
                          rdfs:comment "the general class for modelling feature structures. Typed Feature Structures can be realised by sub-classifying FeatureStructure class."^^rdfs:Literal .
 
 
 
-###  http://www.isfla.org/gam-core#File
+###  http://www.isfla.org/gam-core#Function
 
-:File rdf:type owl:Class ;
+:Function rdf:type owl:Class ;
+          
+          rdfs:comment "This is class constitutes a reification of functions (i.e. the non-structural grammatical constructions)"^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#Gate
+
+:Gate rdf:type owl:Class ;
       
-      rdfs:subClassOf olo:OrderedList ,
-                      olo:Slot ,
-                      :CorpusElement ,
+      rdfs:subClassOf :System ,
                       [ rdf:type owl:Restriction ;
-                        owl:onProperty :encoding ;
-                        owl:cardinality "1"^^xsd:nonNegativeInteger
+                        owl:onProperty :hasChoice ;
+                        owl:onClass :SystemicFeature ;
+                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
                       ] .
-
-
-
-###  http://www.isfla.org/gam-core#FunctionalElement
-
-:FunctionalElement rdf:type owl:Class ;
-                   
-                   rdfs:subClassOf :Node ;
-                   
-                   rdfs:comment "This is class constitutes a reification of functions (i.e. the non-structural grammatical constructions)"^^rdfs:Literal .
-
-
-
-###  http://www.isfla.org/gam-core#LexicalItem
-
-:LexicalItem rdf:type owl:Class ;
-             
-             rdfs:subClassOf :Unit .
 
 
 
@@ -651,11 +618,16 @@ Feature preselections can be either a conjunctive or disjunctive set or both equ
 
 
 
-###  http://www.isfla.org/gam-core#Node
+###  http://www.isfla.org/gam-core#Media
 
-:Node rdf:type owl:Class ;
-      
-      rdfs:comment "a generic node class for all parse trees/graphs, regardless of the gramatical theory"^^rdfs:Literal .
+:Media rdf:type owl:Class ;
+       
+       rdfs:subClassOf olo:Slot ,
+                       :CorpusElement ,
+                       [ rdf:type owl:Restriction ;
+                         owl:onProperty :encoding ;
+                         owl:cardinality "1"^^xsd:nonNegativeInteger
+                       ] .
 
 
 
@@ -676,6 +648,17 @@ Feature preselections can be either a conjunctive or disjunctive set or both equ
 
 
 
+###  http://www.isfla.org/gam-core#PS-Unit
+
+:PS-Unit rdf:type owl:Class ;
+         
+         rdfs:subClassOf :Unit ;
+         
+         rdfs:comment "Generative Structure Unit"^^rdfs:Literal ,
+                      "Phrase Structure Grammar consider phrase structure grammars made of \"constituents\","^^rdfs:Literal .
+
+
+
 ###  http://www.isfla.org/gam-core#PrimitiveValue
 
 :PrimitiveValue rdf:type owl:Class ;
@@ -690,17 +673,20 @@ Feature preselections can be either a conjunctive or disjunctive set or both equ
 
 
 
+###  http://www.isfla.org/gam-core#SFL-Unit
+
+:SFL-Unit rdf:type owl:Class ;
+          
+          rdfs:subClassOf :Unit .
+
+
+
 ###  http://www.isfla.org/gam-core#Segment
 
 :Segment rdf:type owl:Class ;
          
          rdfs:subClassOf olo:Slot ,
                          :CorpusElement ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasAssociated ;
-                           owl:onClass :FeatureStructure ;
-                           owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger
-                         ] ,
                          [ rdf:type owl:Restriction ;
                            owl:onProperty :startOffset ;
                            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
@@ -710,6 +696,11 @@ Feature preselections can be either a conjunctive or disjunctive set or both equ
                            owl:onProperty :endOffset ;
                            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
                            owl:onDataRange xsd:long
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :hasAssociated ;
+                           owl:onClass :FeatureStructure ;
+                           owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger
                          ] .
 
 
@@ -721,12 +712,7 @@ Feature preselections can be either a conjunctive or disjunctive set or both equ
         rdfs:subClassOf :SystemicNetworkElement ,
                         [ rdf:type owl:Restriction ;
                           owl:onProperty :literalValue ;
-                          owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                        ] ,
-                        [ rdf:type owl:Restriction ;
-                          owl:onProperty :hasChoice ;
-                          owl:onClass :Feature ;
-                          owl:minQualifiedCardinality "2"^^xsd:nonNegativeInteger
+                          owl:cardinality "1"^^xsd:nonNegativeInteger
                         ] ,
                         [ rdf:type owl:Restriction ;
                           owl:onProperty :isActivatedBy ;
@@ -735,6 +721,39 @@ Feature preselections can be either a conjunctive or disjunctive set or both equ
                         ] ;
         
         rdfs:comment "System is the base class for creating a paradigmatic perspective on language composed into a (Systemic) Network of Systems."^^rdfs:Literal .
+
+
+
+###  http://www.isfla.org/gam-core#SystemOfChoice
+
+:SystemOfChoice rdf:type owl:Class ;
+                
+                rdfs:subClassOf :System ,
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty :hasChoice ;
+                                  owl:onClass :SystemicFeature ;
+                                  owl:minQualifiedCardinality "2"^^xsd:nonNegativeInteger
+                                ] .
+
+
+
+###  http://www.isfla.org/gam-core#SystemicFeature
+
+:SystemicFeature rdf:type owl:Class ;
+                 
+                 rdfs:subClassOf olo:Slot ,
+                                 :SystemicNetworkElement ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty :realizationRule ;
+                                   owl:minCardinality "1"^^xsd:nonNegativeInteger
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty :probability ;
+                                   owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                   owl:onDataRange xsd:anyURI
+                                 ] ;
+                 
+                 rdfs:comment "the systemic feature represents one of the choices the system has to offer"^^rdfs:Literal .
 
 
 
@@ -750,7 +769,8 @@ Feature preselections can be either a conjunctive or disjunctive set or both equ
 
 :Unit rdf:type owl:Class ;
       
-      rdfs:subClassOf :Node .
+      rdfs:comment "a generic node class for all parse trees/graphs, regardless of the gramatical theory"^^rdfs:Literal ,
+                   "termed also as Node, Form or Structure"^^rdfs:Literal .
 
 
 
@@ -811,33 +831,33 @@ Feature preselections can be either a conjunctive or disjunctive set or both equ
 
 
 [ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( :And
+                        :Or
+                      )
+] .
+[ rdf:type owl:AllDifferent ;
   owl:distinctMembers ( :Not
+                        :Xor
+                      )
+] .
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( :And
                         :Xor
                       )
 ] .
 [ rdf:type owl:AllDifferent ;
   owl:distinctMembers ( :Not
                         :Or
-                      )
-] .
-[ rdf:type owl:AllDifferent ;
-  owl:distinctMembers ( :Or
-                        :Xor
-                      )
-] .
-[ rdf:type owl:AllDifferent ;
-  owl:distinctMembers ( :And
-                        :Or
-                      )
-] .
-[ rdf:type owl:AllDifferent ;
-  owl:distinctMembers ( :And
-                        :Xor
                       )
 ] .
 [ rdf:type owl:AllDifferent ;
   owl:distinctMembers ( :And
                         :Not
+                      )
+] .
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( :Or
+                        :Xor
                       )
 ] .
 
